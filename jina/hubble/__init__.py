@@ -9,7 +9,7 @@ class HubExecutor:
     uuid: str = None
     alias: Optional[str] = None
     sn: Optional[int] = None
-    tag: Optional[str] = None
+    tag: str = None
     visibility: Optional[bool] = None
     image_name: Optional[str] = None
     archive_url: Optional[str] = None
