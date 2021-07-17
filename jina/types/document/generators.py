@@ -5,6 +5,7 @@ import json
 import os
 import random
 from typing import Optional, Generator, Union, List, Iterable, Dict
+from io import TextIOWrapper
 
 import numpy as np
 
@@ -88,14 +89,14 @@ def from_files(
 
 
 def from_csv(
-    fp: Iterable[str],
+    f: TextIOWrapper, 
     field_resolver: Optional[Dict[str, str]] = None,
     size: Optional[int] = None,
     sampling_rate: Optional[float] = None,
 ) -> Generator['Document', None, None]:
     """Generator function for CSV. Yields documents.
 
-    :param fp: file paths
+    :param f: a csv file object
     :param field_resolver: a map from field names defined in ``document`` (JSON, dict) to the field
             names defined in Protobuf. This is only used when the given ``document`` is
             a JSON string or a Python dict.
@@ -106,7 +107,7 @@ def from_csv(
     """
     from ..document import Document
 
-    lines = csv.DictReader(fp)
+    lines = csv.DictReader(f)
     for value in _subsample(lines, size, sampling_rate):
         if 'groundtruth' in value and 'document' in value:
             yield Document(value['document'], field_resolver), Document(
